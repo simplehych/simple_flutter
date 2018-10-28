@@ -7,7 +7,6 @@ A new Flutter project.
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
-
 GSYGithubAppFlutter系列学习相关的：
 
 https://www.jianshu.com/p/533b5b8d2f71
