@@ -8,7 +8,7 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 
-GSYGithubAppFlutter系列学习：
+GSYGithubAppFlutter系列学习相关资料：
 
 https://www.jianshu.com/p/533b5b8d2f71
 
