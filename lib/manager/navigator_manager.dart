@@ -18,4 +18,10 @@ class NavigatorManager {
   static goMainPage(BuildContext context) {
     Navigator.pushReplacementNamed(context, MainPage.sName);
   }
+
+  static _goPage(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return page;
+    }));
+  }
 }

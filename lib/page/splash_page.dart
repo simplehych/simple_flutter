@@ -5,6 +5,7 @@ import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/style/global_style.dart';
 import 'package:simple_flutter/storage/sp_storage.dart';
 import 'package:simple_flutter/manager/navigator_manager.dart';
+import 'package:simple_flutter/utils/log.dart';
 
 /// 开屏页
 class SplashPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  static final String _tag = "_SplashPageState";
+
   bool hadInitState = false;
 
   @override
@@ -43,8 +46,6 @@ class _SplashPageState extends State<SplashPage> {
 
     hadInitState = true;
 
-    Store<GlobalState> store = StoreProvider.of(context);
-
     Future.delayed(
       const Duration(seconds: 2),
       _goPageChoice,
@@ -53,12 +54,14 @@ class _SplashPageState extends State<SplashPage> {
 
   _goPageChoice() async {
     bool isFirstRunApp = await SpStorage.get<bool>(SpStorage.keyIsFirstRunApp);
+    Log.i(_tag, 'isFirstRunApp: $isFirstRunApp');
     if (isFirstRunApp) {
       //第一次运行app(未进入到首页)，则进入引导页面
       NavigatorManager.goGuidePage(context);
     } else {
       //非第一次运行app，有广告进入广告页面，否则进入主页
       bool isHaveAd = true;
+      Log.i(_tag, 'isHaveAd: $isHaveAd');
       if (isHaveAd) {
         NavigatorManager.goAdPage(context);
       } else {

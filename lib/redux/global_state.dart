@@ -5,7 +5,7 @@ import 'locale_reducer.dart';
 class GlobalState {
   ThemeData themeData;
   Locale locale;
-  Locale platformLocale;
+  Locale platformLocale ;
 
   GlobalState({this.themeData, this.locale});
 }
