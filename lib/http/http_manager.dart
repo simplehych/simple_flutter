@@ -1,13 +1,11 @@
-import 'dart:_http';
+import 'dart:io';
 
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:simple_flutter/style/string/strings.dart';
+import 'package:dio/dio.dart';
 import 'package:simple_flutter/utils/log.dart';
 
 class HttpManager {
-  static final String _tag = "HttpManager";
+  static const String _TAG = "HttpManager";
 
   static const int TIMEOUT_CONNECT = 5000;
   static const int TIMEOUT_RECEIVE = 3000;
@@ -22,27 +20,35 @@ class HttpManager {
   static const String METHOD_PATCH = "PATCH";
   static const String METHOD_HAND = "HAND";
 
-  static get(String url) {
-    Dio dio = Dio();
+  static get(String url, {Map<String, dynamic> params, Function callback}) {
+    _request(url, callback, method: METHOD_GET, data: params);
   }
 
-  static post(String url) {}
+  static post(String url,
+      {Map<String, dynamic> params, bool needFormData, Function callback}) {
+    _request(url, callback,
+        method: METHOD_POST, data: params, needFormData: needFormData);
+  }
 
-  static _request(String url, Function callback,
-      {String method,
-      Map<String, dynamic> params,
-      Function errorCallback}) async {
-    Log.i(_tag, '''
+  static _request(
+    String url,
+    Function callback, {
+    String method,
+    data,
+    bool needFormData,
+    Function errorCallback,
+  }) async {
+    Log.i(_TAG, '''
     _request info
     method: ${method ?? "null"}  url: $url
-    params: ${params.toString() ?? "params is null"}
+    params: ${data.toString() ?? "params is null"}
     ---
     ''');
 
     ConnectivityResult connectivityResult =
         await Connectivity().checkConnectivity();
     if (ConnectivityResult.none == connectivityResult) {
-      Log.i(_tag, "_request connectivityResult none");
+      Log.i(_TAG, "_request connectivityResult none");
       return;
     }
 
@@ -53,7 +59,7 @@ class HttpManager {
       method = METHOD_GET;
     }
 
-    ///配置网络请求信息
+    /// 配置网络请求信息
     Options options = Options();
     //连接服务器超时时间，单位毫秒
     options.connectTimeout = TIMEOUT_CONNECT;
@@ -61,27 +67,32 @@ class HttpManager {
     options.receiveTimeout = TIMEOUT_RECEIVE;
     //请求方法类型
     options.method = method;
-    if (_checkParamsNull(params) && params is Map) {
-      //contentType
-      options.contentType = ContentType.parse(CONTENT_TYPE_JSON);
-      //接受响应数据类型
-      options.responseType = ResponseType.JSON;
-    } else {
-      options.contentType = ContentType.parse(CONTENT_TYPE_FORM);
-      options.responseType = ResponseType.PLAIN;
-    }
+    //contentType CONTENT_TYPE_FORM和PLAIN对应
+    options.contentType = ContentType.parse(CONTENT_TYPE_JSON);
+    //接受响应数据类型 PLAIN
+    options.responseType = ResponseType.JSON;
 
     //如果是Get方法，将请求参数拼接到地址后，并将参数置为null
-    if (METHOD_GET == method && _checkParamsNull(params)) {
-      StringBuffer sb = new StringBuffer("?");
-      params.forEach((k, v) {
-        sb.write("$k=$v");
-        sb.write("&");
-      });
-      String paramStr = sb.toString();
-      paramStr = paramStr.substring(0, paramStr.length - 1);
-      url += paramStr;
-      params = null;
+    if (_checkParamsNull(data)) {
+      if (METHOD_GET == method) {
+        StringBuffer sb = new StringBuffer("?");
+        data.forEach((key, value) {
+          sb.write("$key=$value");
+          sb.write("&");
+        });
+        String paramStr = sb.toString();
+        paramStr = paramStr.substring(0, paramStr.length - 1);
+        url += paramStr;
+        data = null;
+      } else if (METHOD_POST == method && needFormData) {
+        Log.i(_TAG,"METHOD_GET == method && needFormData");
+        FormData formData = FormData();
+        data.forEach((key, value) {
+          formData.add(key, value);
+        });
+        data = formData;
+        Log.i(_TAG, data.toString());
+      }
     }
 
     //dio请求流：请求拦截器 >> 请求转换器 >> 发起请求 >> 响应转换器 >> 响应拦截器 >> 最终结果
@@ -112,9 +123,11 @@ class HttpManager {
 
       //6.拦截器别名 dio.lock() = dio.interceptor.request.lock()
     };
+
     dio.interceptor.response.onSuccess = (Response response) {
       return response;
     };
+
     dio.interceptor.response.onError = (DioError e) {
       return e;
     };
@@ -139,20 +152,22 @@ class HttpManager {
     /// Cookie
     // 默认使用CookieJar自动管理cookie保存在内存中
     // 如果想对cookie进行持久化，使用PersistCookieJar，该实现了RFC中标准的cookie策略，将cookie保存在文件中，所以一直存在，除非显示调用delete删除
-    PersistCookieJar persistCookieJar = new PersistCookieJar("./cookies");
-    dio.cookieJar = persistCookieJar;
+//    PersistCookieJar persistCookieJar = new PersistCookieJar("./cookies");
+//    dio.cookieJar = persistCookieJar;
+
     try {
       Response response = await dio.request(url,
-          data: params, cancelToken: cancelToken, options: options);
+          data: data, cancelToken: cancelToken, options: options);
 
-      Log.i(_tag, '''
+      Log.i(_TAG, '''
       _request response
+      method: ${response.request.method}  url: ${response.request.baseUrl}${response.request.path}
       data: ${response.data.toString()}
-      headers: ${response.headers.toString()}
-      options: ${response.request.toString()}
+      headers: 
+      \n      ${response.headers.toString()}
       statusCode: ${response.statusCode.toString()}
       extra: ${response.extra.toString()}
-      ---
+      
       ''');
 
       var statusCode = response.statusCode;
@@ -164,8 +179,8 @@ class HttpManager {
       if (callback != null) {
         callback(response.data["data"]);
       }
-
     } on DioError catch (e) {
+
       _handleError(errorCallback, e);
     }
   }
@@ -173,14 +188,20 @@ class HttpManager {
   static _handleError(Function errorCallback, e) {
     String errorStr = e.toString();
     if (e.type == DioErrorType.CONNECT_TIMEOUT) {}
-    Log.i(_tag, "_handleError errorMsg: $errorStr");
+    Log.i(_TAG, '''
+      _handleError e
+      method: ${e.response.request.method}  url: ${e.response.request.baseUrl}${e.response.request.path}
+      err: ${e.toString()}
+      
+      ''');
     if (errorCallback != null) {
       errorCallback(errorStr);
     }
   }
 
   static _checkParamsNull(params) {
-    return params != null && params.isNotEmpty;
+    return params != null
+        && (params is Map ? params.isNotEmpty : true);
   }
 }
 

@@ -16,7 +16,7 @@ class AdvertisePage extends StatefulWidget {
 }
 
 class _AdvertisePageState extends State<AdvertisePage> {
-  static final String _tag = "_AdvertisePageState";
+  static const String _TAG = "_AdvertisePageState";
 
   int _delaySeconds;
   Timer _countDownTimer;
@@ -57,7 +57,7 @@ class _AdvertisePageState extends State<AdvertisePage> {
 
     _countDownTimer = new Timer.periodic(Duration(seconds: delays), (timer) {
       var tick = timer.tick;
-      Log.i(_tag, "_countDown tick:$tick");
+      Log.i(_TAG, "_countDown tick:$tick");
 
       setState(() {
         _delaySeconds--;

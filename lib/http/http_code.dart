@@ -3,7 +3,7 @@ import 'package:simple_flutter/event/http_error_event.dart';
 import 'package:simple_flutter/utils/log.dart';
 
 class HttpCode {
-  static final _tag = "HttpCode";
+  static const _TAG = "HttpCode";
   static const NETWORK_ERROR = -1;
   static const NETWORK_TIMEOUT = -2;
   static const NETWORK_JSON_EXCEPTION = -3;
@@ -14,7 +14,7 @@ class HttpCode {
     if (!noTip) {
       eventBus.fire(new HttpErrorEvent(code, message));
     }
-    Log.i(_tag, "handleException code:$code message:$message");
+    Log.i(_TAG, "handleException code:$code message:$message");
     return message;
   }
 }
