@@ -23,8 +23,6 @@ dependencies:
   flutter_redux: ^0.5.2
   # 引导页
   intro_views_flutter: "^1.0.0"
-  # Sp
-  shared_preferences: ^0.4.2
   # 语言
   flutter_localizations:
     sdk: flutter
@@ -32,6 +30,12 @@ dependencies:
   event_bus:  ^1.0.1
   # Toast
   fluttertoast: 2.0.9
+  # 存储 Sp
+  shared_preferences: ^0.4.2
+  # 存储 provider
+  path_provider: ^0.4.0
+  # 存储 数据库
+  sqflite: ^0.12.2+1
   # 检查网络连接
   connectivity: ^0.3.1
   # 网络请求

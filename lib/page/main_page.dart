@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/redux/global_state.dart';
-import 'package:simple_flutter/storage/sp_storage.dart';
+import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
+import 'package:simple_flutter/storage/sp/sp_storage.dart';
+import 'package:simple_flutter/utils/log.dart';
 
 class MainPage extends StatefulWidget {
   static final String sName = "main";
@@ -32,13 +34,12 @@ class _MainPageState extends State<MainPage> {
               child: FlatButton(
             child: Text('main page'),
             onPressed: () async {
-//              String getUrl = "http://wanandroid.com/wxarticle/chapters/json ";
-//              var getRes = await HttpManager.get(getUrl);
-              String postUrl = "http://www.wanandroid.com/article/query/0/json";
-              var postRes = await HttpManager.post(postUrl, params: {"k": "1"},needFormData: true);
-//              String postUrl = "http://www.wanandroid.com/lg/uncollect_originId/2333/json";
-//              var postRes = await HttpManager.post(postUrl);
-//              Log.i(_TAG, "res: $getRes");
+              var map2 = {"name": "jack", "mood": "I am happy"};
+              UserDbProvider userProvider = UserDbProvider.from(map2);
+              await userProvider.delete("jack");
+              await userProvider.insert(userProvider);
+              UserDbProvider dbUser = await userProvider.query("jack");
+              Log.i(_TAG, "dbUser: ${dbUser.toMap().toString()}");
             },
           )),
         );

@@ -29,3 +29,7 @@ Q:Toast.LENGTH_SHORT和自己命名的类重复问题解决
 Q:使用json build runner时报错The current Dart SDK version is 2.1.0-dev.6.0.flutter-a50dfd6698. Because build_runner >=0.9.1+1 <0.10.3 depends on build >=0.12.7 <0.12.8 and build >=0.0.1+1 <=0.12.7 requires SDK version <2.0.0 or >=2.0.0-dev.9 <2.0.0, build_runner >=0.9.1+1 <0.10.3 requires build >=0.12.7+2 <0.12.8.
 
 A: 注释掉dev_dependencies:下的flutter_test:sdk: flutter
+
+Q: Future的使用
+
+A: http://flutter.link/2018/04/12/Dart%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/
