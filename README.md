@@ -35,6 +35,6 @@ Q: Future的使用
 A: http://flutter.link/2018/04/12/Dart%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/
 
 
-Q: List data; 没有默认值，不是null
+Q: List data; 没有默认值，不是null??????????
 
-A: 所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来
+A: 所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来,好像不是。。。。。
