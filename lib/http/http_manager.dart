@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
+import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/utils/log.dart';
 
 class HttpManager {
@@ -20,13 +22,16 @@ class HttpManager {
   static const String METHOD_PATCH = "PATCH";
   static const String METHOD_HAND = "HAND";
 
-  static get(String url, {Map<String, dynamic> params, Function callback}) {
-    _request(url, callback, method: METHOD_GET, data: params);
+  static get(String url,
+      {Map<String, dynamic> params, Function callback}) async {
+    return await _request(url, callback, method: METHOD_GET, data: params);
   }
 
   static post(String url,
-      {Map<String, dynamic> params, bool needFormData, Function callback}) {
-    _request(url, callback,
+      {Map<String, dynamic> params,
+      bool needFormData,
+      Function callback}) async {
+    return await _request(url, callback,
         method: METHOD_POST, data: params, needFormData: needFormData);
   }
 
@@ -39,9 +44,9 @@ class HttpManager {
     Function errorCallback,
   }) async {
     Log.i(_TAG, '''
-    _request info
-    method: ${method ?? "null"}  url: $url
-    params: ${data.toString() ?? "params is null"}
+      _request info
+      method: ${method ?? "null"}  url: $url
+      params: ${data.toString() ?? "params is null"}
     ---
     ''');
 
@@ -49,7 +54,7 @@ class HttpManager {
         await Connectivity().checkConnectivity();
     if (ConnectivityResult.none == connectivityResult) {
       Log.i(_TAG, "_request connectivityResult none");
-      return;
+      return _handleNetError(888, "no net", errorCallback, null);
     }
 
     //如果方法类型统一转换成大写，如果为空默认为GET请求
@@ -85,7 +90,7 @@ class HttpManager {
         url += paramStr;
         data = null;
       } else if (METHOD_POST == method && needFormData) {
-        Log.i(_TAG,"METHOD_GET == method && needFormData");
+        Log.i(_TAG, "METHOD_GET == method && needFormData");
         FormData formData = FormData();
         data.forEach((key, value) {
           formData.add(key, value);
@@ -172,36 +177,72 @@ class HttpManager {
 
       var statusCode = response.statusCode;
       if (statusCode < 0) {
-        _handleError(errorCallback, "网络请求错误");
-        return;
+        return _handleNetError(
+            statusCode, response.toString(), errorCallback, null);
       }
-
-      if (callback != null) {
-        callback(response.data["data"]);
-      }
+      return _handleNetSuccess(response, callback, errorCallback);
     } on DioError catch (e) {
-
-      _handleError(errorCallback, e);
+      return _handleNetError(999, e.toString(), errorCallback, e);
+    } catch (e) {
+      return _handleNetError(999, e.toString(), errorCallback, e);
     }
   }
 
-  static _handleError(Function errorCallback, e) {
-    String errorStr = e.toString();
-    if (e.type == DioErrorType.CONNECT_TIMEOUT) {}
+  static _handleNetSuccess(
+      Response response, Function callback, Function errorCallback) {
+    BaseResultData resultData = _buildSuccessResultData(response);
+
+    if (callback != null) {
+      callback(resultData);
+    }
+    return resultData;
+  }
+
+  /// 只是处理网络请求，或者dio错误，不包括接口正确返回的数据错误
+  static _handleNetError(
+      int errorCode, String errorMsg, Function errorCallback, e) {
     Log.i(_TAG, '''
-      _handleError e
-      method: ${e.response.request.method}  url: ${e.response.request.baseUrl}${e.response.request.path}
-      err: ${e.toString()}
+      _handleError
+      belongs to error:  ${e is DioError}
+      errorCode: $errorCode
+      errorMsg: $errorMsg
+      e: ${e?.toString()}
+      method: ${e?.response?.request?.method}  
+      url: ${e?.response?.request?.baseUrl}${e?.response?.request?.path}
       
       ''');
+    BaseResultData resultData = _buildErrorResultData(errorCode, errorMsg);
     if (errorCallback != null) {
-      errorCallback(errorStr);
+      errorCallback(resultData);
     }
+    return resultData;
+  }
+
+  ///基于本App的通用返回结果处理数据
+  static BaseResultData _buildSuccessResultData(Response response) {
+    BaseResultData successResultData = new BaseResultData();
+    var responseData = response.data;
+    var _errorCode = responseData["errorCode"];
+    var _errorMsg = responseData["errorMsg"];
+    // 此时_data已经不是json字符串类型了，而是T，所以在以后不能使用json.decode(_data)
+    var _data = responseData["data"];
+    successResultData.errorCode = _errorCode;
+    successResultData.errorMsg = _errorMsg;
+    successResultData.data = _data;
+    return successResultData;
+  }
+
+  ///基于本App的通用返回结果处理数据
+  static BaseResultData _buildErrorResultData(int errorCode, String errorMsg) {
+    BaseResultData errorResultData = new BaseResultData();
+    errorResultData.errorCode = errorCode;
+    errorResultData.errorMsg = errorMsg;
+    errorResultData.data = null;
+    return errorResultData;
   }
 
   static _checkParamsNull(params) {
-    return params != null
-        && (params is Map ? params.isNotEmpty : true);
+    return params != null && (params is Map ? params.isNotEmpty : true);
   }
 }
 

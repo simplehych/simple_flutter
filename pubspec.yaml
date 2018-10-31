@@ -41,7 +41,9 @@ dependencies:
   # 网络请求
   dio: ^1.0.1
 
-  # json  使用快速生成工具：https://caijinglong.github.io/json2dart/index_ch.html
+  # json
+  # 使用快速生成工具：https://caijinglong.github.io/json2dart/index_ch.html
+  # 使用命令生成： flutter packages pub run build_runner build
   json_annotation: ^1.1.0
 
 

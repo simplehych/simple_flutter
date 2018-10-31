@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:simple_flutter/http/address.dart';
+import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
+import 'package:simple_flutter/model/wx_public_account.dart';
+import 'package:simple_flutter/page/wx_public_account_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
 import 'package:simple_flutter/storage/sp/sp_storage.dart';
@@ -18,6 +24,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   static const String _TAG = "_MainPageState";
 
+  int _tabIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -27,23 +35,54 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-      builder: (context, store) {
-        return Container(
-          child: Center(
-              child: FlatButton(
-            child: Text('main page'),
-            onPressed: () async {
-              var map2 = {"name": "jack", "mood": "I am happy"};
-              UserDbProvider userProvider = UserDbProvider.from(map2);
-              await userProvider.delete("jack");
-              await userProvider.insert(userProvider);
-              UserDbProvider dbUser = await userProvider.query("jack");
-              Log.i(_TAG, "dbUser: ${dbUser.toMap().toString()}");
-            },
-          )),
-        );
-      },
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("wanandroid"),
+        ),
+        body: IndexedStack(
+          children: <Widget>[
+            Center(
+              child: Text("home"),
+            ),
+            WxPublicAccountPage(),
+//              Center(),
+            Center(
+              child: Text("mine"),
+            ),
+          ],
+          index: _tabIndex,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.grey),
+              title: Text("home"),
+              activeIcon: Icon(Icons.home, color: Colors.white),
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.grey),
+              title: Text("wx"),
+              activeIcon: Icon(Icons.home, color: Colors.white),
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle, color: Colors.grey),
+              title: Text("mine"),
+              activeIcon: Icon(Icons.account_circle, color: Colors.white),
+              backgroundColor: Colors.blue,
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _tabIndex,
+          onTap: (index) {
+            setState(() {
+              _tabIndex = index;
+            });
+          },
+        ),
+      ),
     );
   }
 }
