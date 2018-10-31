@@ -14,7 +14,7 @@ class WxPublicAccountPage extends StatefulWidget {
 }
 
 class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
-  List dataList;
+  List dataList = List();
 
 //  @override
 //  void initState() {
@@ -39,20 +39,24 @@ class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
         return ListView.builder(
             padding: EdgeInsets.all(16.0),
             itemBuilder: (context, i) {
+              print(dataList);
               if (dataList == null) {
                 return Container();
               }
-              assert(dataList[i] is WxPublicAccount);
-              WxPublicAccount data = dataList[i];
-              return RaisedButton(
-                child: Center(
-                  child: Text(data.name),
-                ),
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text(data.courseId.toString())));
-                },
+              return Center(
+                child: Text("11"),
               );
+//              assert(dataList[i] is WxPublicAccount);
+//              WxPublicAccount data = dataList[i];
+//              return RaisedButton(
+//                child: Center(
+//                  child: Text(data.name),
+//                ),
+//                onPressed: () {
+//                  Scaffold.of(context).showSnackBar(
+//                      SnackBar(content: Text(data.courseId.toString())));
+//                },
+//              );
             });
       },
     );
