@@ -224,7 +224,9 @@ class HttpManager {
     var responseData = response.data;
     var _errorCode = responseData["errorCode"];
     var _errorMsg = responseData["errorMsg"];
-    // 此时_data已经不是json字符串类型了，而是T，所以在以后不能使用json.decode(_data)
+    // 此时_data已经不是json字符串类型了，
+    // 而是T，所以在以后不能使用json.decode(_data)
+    // 结果为Map或者List<Map>，在使用时解析
     var _data = responseData["data"];
     successResultData.errorCode = _errorCode;
     successResultData.errorMsg = _errorMsg;

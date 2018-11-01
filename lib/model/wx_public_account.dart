@@ -4,7 +4,7 @@ part 'wx_public_account.g.dart';
 
 @JsonSerializable()
 class WxPublicAccount {
-//  List<String> children;
+  List<String> children;
 
   int courseId;
 

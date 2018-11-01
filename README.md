@@ -35,6 +35,11 @@ Q: Future的使用
 A: http://flutter.link/2018/04/12/Dart%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/
 
 
-Q: List data; 没有默认值，不是null??????????
+Q: List data; 没有默认值，不是null??????????  验证结果默认值是null
 
-A: 所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来,好像不是。。。。。
+A: 所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来,好像不是。。。。。,在ListView.buildItem可能不能返回Container()所以渲染不出来，需要给Container添加child
+
+
+Q: BottomNavigationBar设置背景色
+
+A: 目前暂未找到，或许可以外加布局嵌套，但是设置背景的嵌套布局没有找到,backgroundColor在fixed模式下无效

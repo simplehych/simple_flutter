@@ -2,6 +2,7 @@ import 'package:simple_flutter/storage/db/base_db_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UserDbProvider extends BaseDbProvider {
+  final String columnId = "id";
   final String columnName = "name";
   final String columnMood = "mood";
 
@@ -13,13 +14,11 @@ class UserDbProvider extends BaseDbProvider {
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
+      columnId: id,
       columnName: name,
       columnMood: mood,
     };
 
-    if (id != null) {
-      map[columnId] = id;
-    }
     return map;
   }
 
@@ -70,7 +69,7 @@ class UserDbProvider extends BaseDbProvider {
     Database db = await getDatabase();
     List<Map> resMaps = await db.query(
       tableName(),
-      columns: [columnId,columnName, columnMood],
+      columns: [columnId, columnName, columnMood],
       where: "$columnName = ?",
       whereArgs: [name],
     );

@@ -5,6 +5,8 @@ import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/model/wx_public_account.dart';
 import 'package:simple_flutter/redux/global_state.dart';
+import 'package:simple_flutter/storage/db/provider/wx_public_account_db_provider.dart';
+import 'package:simple_flutter/utils/log.dart';
 
 class WxPublicAccountPage extends StatefulWidget {
   @override
@@ -14,48 +16,62 @@ class WxPublicAccountPage extends StatefulWidget {
 }
 
 class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
+  static const String _TAG = "_WxPublicAccountPageState";
+
   List dataList;
 
-//  @override
-//  void initState() {
-//    super.initState();
-//  }
+  @override
+  void initState() {
+    super.initState();
+    Log.i(_TAG, "initState");
+    fetchData();
+  }
 
-//  @override
-//  void didChangeDependencies() {
-////    fetchData();
-//    super.didChangeDependencies();
-//  }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Log.i(_TAG, "didChangeDependencies");
+  }
 
   fetchData() async {
     var res = await HttpManager.get(Address.getWxPubAccounts());
     dataList = res.data;
+    for (var data in dataList) {
+      WxPublicAccountDbProvider provider = new WxPublicAccountDbProvider();
+      var insertId = await provider.insert(WxPublicAccountDbProvider.fromMap(data));
+
+      var query = await provider.query("鸿洋");
+      Log.i(_TAG, "query: $query");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<GlobalState>(
       builder: (context, store) {
+        if (dataList == null) {
+          Log.i(_TAG, "ListView.builder dataList==null");
+          return Container();
+        }
         return ListView.builder(
-            padding: EdgeInsets.all(16.0),
-            itemBuilder: (context, i) {
-              if (dataList == null) {
-                return Container(
-                  child: Text("1"),
-                );
-              }
-              assert(dataList[i] is WxPublicAccount);
-              WxPublicAccount data = dataList[i];
-              return RaisedButton(
-                child: Center(
-                  child: Text(data.name),
-                ),
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text(data.courseId.toString())));
-                },
-              );
-            });
+          padding: EdgeInsets.all(16.0),
+          itemBuilder: (context, i) {
+            assert(dataList != null);
+            Log.i(_TAG,
+                "ListView.builder dataList[$i] ${dataList[i].toString()}");
+            WxPublicAccount data = WxPublicAccount.fromJson(dataList[i]);
+            return RaisedButton(
+              child: Center(
+                child: Text(data.name),
+              ),
+              onPressed: () {
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text(data.name.toString())));
+              },
+            );
+          },
+          itemCount: dataList.length,
+        );
       },
     );
   }

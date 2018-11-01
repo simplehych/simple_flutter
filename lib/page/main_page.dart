@@ -35,54 +35,63 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("wanandroid"),
-        ),
-        body: IndexedStack(
-          children: <Widget>[
-            Center(
-              child: Text("home"),
-            ),
-            WxPublicAccountPage(),
-//              Center(),
-            Center(
-              child: Text("mine"),
-            ),
-          ],
-          index: _tabIndex,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.grey),
-              title: Text("home"),
-              activeIcon: Icon(Icons.home, color: Colors.white),
-              backgroundColor: Colors.blue,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.grey),
-              title: Text("wx"),
-              activeIcon: Icon(Icons.home, color: Colors.white),
-              backgroundColor: Colors.blue,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle, color: Colors.grey),
-              title: Text("mine"),
-              activeIcon: Icon(Icons.account_circle, color: Colors.white),
-              backgroundColor: Colors.blue,
-            ),
-          ],
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _tabIndex,
-          onTap: (index) {
-            setState(() {
-              _tabIndex = index;
-            });
-          },
-        ),
+    List<BottomNavigationBarItem> _navigationViews = <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home, color: Colors.grey),
+        title: Text("home"),
+        activeIcon: Icon(Icons.home, color: Colors.blue),
+        backgroundColor: Colors.brown,
       ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.wallpaper, color: Colors.grey),
+        title: Text("wx"),
+        activeIcon: Icon(Icons.wallpaper, color: Colors.blue),
+        backgroundColor: Colors.brown,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.account_circle, color: Colors.grey),
+        title: Text("mine"),
+        activeIcon: Icon(Icons.account_circle, color: Colors.blue),
+        backgroundColor: Colors.brown,
+      ),
+    ];
+
+    return StoreBuilder<GlobalState>(
+      builder: (context, store) {
+        return WillPopScope(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text("wanandroid"),
+            ),
+            body: IndexedStack(
+              children: <Widget>[
+                Center(
+                  child: Text("home"),
+                ),
+                WxPublicAccountPage(),
+//              Center(),
+                Center(
+                  child: Text("mine"),
+                ),
+              ],
+              index: _tabIndex,
+            ),
+            bottomNavigationBar: Container(
+              child: BottomNavigationBar(
+                items: _navigationViews,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: _tabIndex,
+                fixedColor: Colors.blue,
+                onTap: (index) {
+                  setState(() {
+                    _tabIndex = index;
+                  });
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

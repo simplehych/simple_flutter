@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 abstract class BaseDbProvider {
   static const String _TAG = "BaseDbProvider";
-  final String columnId = "_id";
+  final String _primaryId = "_id";
 
   getDatabase() async {
     Database database = await DbStorageManager.getDatabase();
@@ -13,7 +13,7 @@ abstract class BaseDbProvider {
       String sqlStr = '''
         create table ${tableName()}
         (
-        $columnId integer primary key autoincrement,
+        $_primaryId integer primary key autoincrement,
         ${_getTableSqlString()}
         )
       ''';
