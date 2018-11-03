@@ -8,8 +8,9 @@ class Address {
   }
 
   /// 获取某个公众号历史数据
-  static getHistoryOnWxPubAccount(String id, String pageNum) {
-    String shortPath = "/wxarticle/list/$id/$pageNum/json";
+  static getHistoryOnWxPubAccount(int id, int pageNum) {
+    String shortPath =
+        "/wxarticle/list/${id.toString()}/${pageNum.toString()}/json";
     return "$HOST$shortPath";
   }
 
@@ -21,7 +22,7 @@ class Address {
   }
 
   /// 获取最新项目
-  static getLatestProjects(String pageNum){
+  static getLatestProjects(String pageNum) {
     String shortPath = "/article/listproject/$pageNum/json";
     return "$HOST$shortPath";
   }

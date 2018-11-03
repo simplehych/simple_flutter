@@ -37,9 +37,26 @@ A: http://flutter.link/2018/04/12/Dart%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E6%93
 
 Q: List data; 没有默认值，不是null??????????  验证结果默认值是null
 
-A: 所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来,好像不是。。。。。,在ListView.buildItem可能不能返回Container()所以渲染不出来，需要给Container添加child
+A: 所有类型没有初始化的值都是null，包括int；所以需要初始化，不能用 if(data ==null) 判断，在界面显示会加载不出来,好像不是。。。。。,在ListView.buildItem可能不能返回Container()所以渲染不出来，需要给Container添加child
 
 
 Q: BottomNavigationBar设置背景色
 
 A: 目前暂未找到，或许可以外加布局嵌套，但是设置背景的嵌套布局没有找到,backgroundColor在fixed模式下无效
+
+Q: 数据库sqflite的使用，替换为关键字的名字，如id，order等；还有使用List<dynamic>怎么处理
+
+A: 暂未发现
+
+Q: 数据库查询使用where in
+
+A: db.delete("table","phoneNumber in (?)","'10086,'10010'")   select * from tableName where phoneNumber in ('10086','10010')
+
+Q: 波纹
+
+A: InkWell  RaiseButton
+
+
+Q: RefreshIndicator 有返回值
+
+A: return 之后则消失，假如加async马上消失，不加不消失

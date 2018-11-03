@@ -207,8 +207,8 @@ class HttpManager {
       errorCode: $errorCode
       errorMsg: $errorMsg
       e: ${e?.toString()}
-      method: ${e?.response?.request?.method}  
-      url: ${e?.response?.request?.baseUrl}${e?.response?.request?.path}
+      method: ${e is DioError ? e?.response?.request?.method : "sorry is not DioError"}  
+      url: ${e is DioError ? e?.response?.request?.baseUrl : "sorry is not DioError"}${e is DioError ? e?.response?.request?.path : ""}
       
       ''');
     BaseResultData resultData = _buildErrorResultData(errorCode, errorMsg);

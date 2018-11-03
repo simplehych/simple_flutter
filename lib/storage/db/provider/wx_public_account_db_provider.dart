@@ -1,8 +1,12 @@
+import 'package:simple_flutter/model/wx_public_account.dart';
 import 'package:simple_flutter/storage/db/base_db_provider.dart';
+import 'package:simple_flutter/utils/log.dart';
 import 'package:sqflite/sqflite.dart';
 
 class WxPublicAccountDbProvider extends BaseDbProvider {
-  final String columnId = "id";
+  static const String _TAG = "WxPublicAccountDbProvider";
+
+  final String columnId = "wxid";
   final String columnName = "name";
   final String columnOrder = "order";
   final String columnParentChapterId = "parentChapterId";
@@ -13,52 +17,52 @@ class WxPublicAccountDbProvider extends BaseDbProvider {
 
   int id;
   String name;
-  int order;
-  int parentChapterId;
-  bool userControlSetTop;
-  int visible;
-//  List<String> children;
-  int courseId;
+  String order;
+  String parentChapterId;
+  String userControlSetTop;
+  String visible;
 
+//  List<dynamic> children;
+  String courseId;
 
   WxPublicAccountDbProvider();
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
-//      columnId: id,
+      columnId: id,
       columnName: name,
 //      columnOrder: order,
-//      columnParentChapterId: parentChapterId,
-//      columnUserControlSetTop: userControlSetTop,
-//      columnVisible: visible,
-//      columnCourseId: courseId,
+      columnParentChapterId: parentChapterId,
+      columnUserControlSetTop: userControlSetTop,
+      columnVisible: visible,
+      columnCourseId: courseId,
 //      columnChildren: children,
     };
     return map;
   }
 
   WxPublicAccountDbProvider.fromMap(Map map) {
-    id = map[columnId];
+    id = map["id"];
     name = map[columnName];
-    order = map[columnOrder];
-    parentChapterId = map[columnParentChapterId];
-    userControlSetTop = map[columnUserControlSetTop];
-    visible = map[columnVisible];
-    courseId = map[columnCourseId];
+//    order = map[columnOrder];
+    parentChapterId = map[columnParentChapterId].toString();
+    userControlSetTop = map[columnUserControlSetTop].toString();
+    visible = map[columnVisible].toString();
+    courseId = map[columnCourseId].toString();
 //    children = map[columnChildren];
   }
 
   @override
   List<String> otherColumnSqlStr() {
     return [
-//      "$columnId",
-      "$columnName text not null",
-//      "columnOrder",
-//      "columnParentChapterId",
-//      "columnUserControlSetTop",
-//      "columnVisible",
-//      "columnCourseId",
-//      "columnChildren",
+      "$columnId",
+      "$columnName",
+//      "$columnOrder",
+      "$columnParentChapterId",
+      "$columnUserControlSetTop",
+      "$columnVisible",
+      "$columnCourseId",
+//      "$columnChildren",
     ];
   }
 
@@ -81,6 +85,7 @@ class WxPublicAccountDbProvider extends BaseDbProvider {
     );
 
     if (resMaps.length > 0) {
+      Log.i(_TAG, "resMaps: ${resMaps.first.toString()}");
       return WxPublicAccountDbProvider.fromMap(resMaps.first);
     }
     return null;
@@ -88,8 +93,6 @@ class WxPublicAccountDbProvider extends BaseDbProvider {
 
   @override
   String toString() {
-    return 'WxPublicAccountDbProvider{name: $name}';
+    return 'WxPublicAccountDbProvider{columnOrder: $columnOrder, id: id, name: $name, order: $order, parentChapterId: $parentChapterId, userControlSetTop: $userControlSetTop, visible: $visible, children: children}';
   }
-
-
 }

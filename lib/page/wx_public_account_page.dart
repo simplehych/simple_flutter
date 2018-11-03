@@ -4,6 +4,7 @@ import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/model/wx_public_account.dart';
+import 'package:simple_flutter/page/wx_public_account_article_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/wx_public_account_db_provider.dart';
 import 'package:simple_flutter/utils/log.dart';
@@ -41,7 +42,7 @@ class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
       var insertId = await provider.insert(WxPublicAccountDbProvider.fromMap(data));
 
       var query = await provider.query("鸿洋");
-      Log.i(_TAG, "query: $query");
+      Log.i(_TAG, "rawQuery: $query");
     }
   }
 
@@ -65,8 +66,11 @@ class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
                 child: Text(data.name),
               ),
               onPressed: () {
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text(data.name.toString())));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                  return WxPublicAccountArticlePage(data.id);
+                }));
+//                Scaffold.of(context).showSnackBar(
+//                    SnackBar(content: Text(data.name.toString())));
               },
             );
           },
