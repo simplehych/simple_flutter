@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/http_manager.dart';
+import 'package:simple_flutter/manager/navigator_manager.dart';
 import 'package:simple_flutter/model/wx_public_account_article.dart';
+import 'package:simple_flutter/page/wx_public_account_search_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/utils/log.dart';
 import 'package:simple_flutter/utils/toast.dart';
 
 class WxPublicAccountArticlePage extends StatefulWidget {
   int wxPublicAccountId;
+  String wxPublicAccountName;
 
-  WxPublicAccountArticlePage(this.wxPublicAccountId);
+  WxPublicAccountArticlePage(this.wxPublicAccountId, this.wxPublicAccountName);
 
   @override
   State<StatefulWidget> createState() {
@@ -28,6 +31,7 @@ class _WxPublicAccountArticlePageState
   int pageNum = 0;
   ScrollController _controller = new ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicator = GlobalKey();
+  final WxPublicAccountSearchPage _searchDelegate = WxPublicAccountSearchPage();
 
   @override
   void initState() {
@@ -79,98 +83,98 @@ class _WxPublicAccountArticlePageState
   Widget build(BuildContext context) {
     return StoreBuilder<GlobalState>(
       builder: (context, store) {
-        if (dataList == null || dataList.isEmpty) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          String chapterName = dataList.first.chapterName;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(chapterName),
-              actions: <Widget>[
-                IconButton(
-                  padding: EdgeInsets.all(10.0),
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    Toast.showShort("search");
-                  },
-                ),
-              ],
-            ),
-            body: RefreshIndicator(
-              key: _refreshIndicator,
-              child: ListView.builder(
-                itemBuilder: (context, i) {
-                  var title = dataList[i].title;
-                  var date = dataList[i].niceDate;
-                  var tags = dataList[i].tags;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.wxPublicAccountName),
+            actions: <Widget>[
+              IconButton(
+                padding: EdgeInsets.all(10.0),
+                icon: Icon(Icons.search),
+                onPressed: () async {
+                  final int select = await showSearch(
+                    context: context,
+                    delegate: _searchDelegate,
+                  );
+                },
+              ),
+            ],
+          ),
+          body: (dataList == null || dataList.isEmpty)
+              ? Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  key: _refreshIndicator,
+                  child: ListView.builder(
+                    itemBuilder: (context, i) {
+                      var title = dataList[i].title;
+                      var date = dataList[i].niceDate;
+                      var tags = dataList[i].tags;
+                      var link = dataList[i].link;
 
-                  return Card(
-                    color: Colors.brown,
-                    child: InkWell(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 10.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                      child: Wrap(
-                                    alignment: WrapAlignment.start,
-                                    spacing: 20.0,
-                                    runSpacing: 5.0,
+                      return Card(
+                        color: Colors.brown,
+                        child: InkWell(
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  child: Row(
                                     children: <Widget>[
+                                      Expanded(
+                                          child: Wrap(
+                                        alignment: WrapAlignment.start,
+                                        spacing: 20.0,
+                                        runSpacing: 5.0,
+                                        children: <Widget>[
+                                          Text(
+                                            tags.first?.name,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                       Text(
-                                        tags.first?.name,
+                                        date,
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           color: Colors.white,
                                         ),
-                                      ),
+                                      )
                                     ],
-                                  )),
-                                  Text(
-                                    date,
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                          onTap: () {
+                            NavigatorManager.goWebViewPage(
+                                context, title, link);
+                          },
                         ),
-                      ),
-                      onTap: () {
-                        Toast.showShort(title);
-                      },
-                    ),
-                  );
-                },
-                itemCount: dataList.length,
-                controller: _controller,
-                physics: AlwaysScrollableScrollPhysics(),
-              ),
-              onRefresh: () {
-                pageNum = 0;
-                return fetchData();
-              },
-            ),
-          );
-        }
+                      );
+                    },
+                    itemCount: dataList.length,
+                    controller: _controller,
+                    physics: AlwaysScrollableScrollPhysics(),
+                  ),
+                  onRefresh: () {
+                    pageNum = 0;
+                    return fetchData();
+                  },
+                ),
+        );
       },
     );
   }

@@ -47,27 +47,26 @@ class _SplashPageState extends State<SplashPage> {
 
     Future.delayed(
       const Duration(seconds: 2),
-      NavigatorManager.goMainPage(context),
-
-//      _goPageChoice,
+      _goPageChoice,
     );
   }
 
   _goPageChoice() async {
-    bool isFirstRunApp = await SpStorage.get<bool>(SpStorage.keyIsFirstRunApp);
-    Log.i(_TAG, 'isFirstRunApp: $isFirstRunApp');
-    if (isFirstRunApp) {
-      //第一次运行app(未进入到首页)，则进入引导页面
-      NavigatorManager.goGuidePage(context);
-    } else {
-      //非第一次运行app，有广告进入广告页面，否则进入主页
-      bool isHaveAd = true;
-      Log.i(_TAG, 'isHaveAd: $isHaveAd');
-      if (isHaveAd) {
-        NavigatorManager.goAdPage(context);
-      } else {
-        NavigatorManager.goMainPage(context);
-      }
-    }
+    NavigatorManager.goMainPage(context);
+//    bool isFirstRunApp = await SpStorage.get<bool>(SpStorage.keyIsFirstRunApp);
+//    Log.i(_TAG, 'isFirstRunApp: $isFirstRunApp');
+//    if (isFirstRunApp) {
+//      //第一次运行app(未进入到首页)，则进入引导页面
+//      NavigatorManager.goGuidePage(context);
+//    } else {
+//      //非第一次运行app，有广告进入广告页面，否则进入主页
+//      bool isHaveAd = true;
+//      Log.i(_TAG, 'isHaveAd: $isHaveAd');
+//      if (isHaveAd) {
+//        NavigatorManager.goAdPage(context);
+//      } else {
+//        NavigatorManager.goMainPage(context);
+//      }
+//    }
   }
 }

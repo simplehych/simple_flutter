@@ -60,3 +60,14 @@ A: InkWell  RaiseButton
 Q: RefreshIndicator 有返回值
 
 A: return 之后则消失，假如加async马上消失，不加不消失
+
+Q: This Overlay widget cannot be marked as needing to build because the framework is already in the
+    process of building widgets. A widget can be marked as needing to be built during the build phase
+   only if one of its ancestors is currently building. This exception is allowed because the framework
+    builds parent widgets before children, which means a dirty descendant will always be  Otherwise, the framework might not visit this widget during this build phase.
+    
+A: 报错很难发现问题的所在，之前报错原因是Splash页面 Future.delayed( const Duration(seconds: 2),_goPageChoice,);把_goPageChoice改成了    NavigatorManager.goMainPage(context);  使得语法错误导致
+
+Q: flutter_webview_plugin报错
+
+A: 重新依赖一下

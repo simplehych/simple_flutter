@@ -67,10 +67,8 @@ class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                  return WxPublicAccountArticlePage(data.id);
+                  return WxPublicAccountArticlePage(data.id,data.name);
                 }));
-//                Scaffold.of(context).showSnackBar(
-//                    SnackBar(content: Text(data.name.toString())));
               },
             );
           },

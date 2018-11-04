@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     //修改第一次运行app标记
-    SpStorage.save(SpStorage.keyIsFirstRunApp, false);
+//    SpStorage.save(SpStorage.keyIsFirstRunApp, false);
   }
 
   @override
