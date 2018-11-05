@@ -19,11 +19,11 @@ class WxPublicAccountArticlePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _WxPublicAccountArticlePageState();
+    return WxPublicAccountArticlePageState();
   }
 }
 
-class _WxPublicAccountArticlePageState
+class WxPublicAccountArticlePageState
     extends State<WxPublicAccountArticlePage> {
   static const String _TAG = "_WxPublicAccountArticlePageState";
 
@@ -31,7 +31,7 @@ class _WxPublicAccountArticlePageState
   int pageNum = 0;
   ScrollController _controller = new ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicator = GlobalKey();
-  final WxPublicAccountSearchPage _searchDelegate = WxPublicAccountSearchPage();
+   final WxPublicAccountSearchPage _searchDelegate = WxPublicAccountSearchPage();
 
   @override
   void initState() {
@@ -63,20 +63,18 @@ class _WxPublicAccountArticlePageState
     var res = await HttpManager.get(
         Address.getHistoryOnWxPubAccount(widget.wxPublicAccountId, pageNum));
     WxPublicAccountArticle r = WxPublicAccountArticle.fromJson(res.data);
-
-    Completer completer = Completer();
-    Timer(Duration(seconds: 3), () => completer.complete(null));
-
-    return completer.future.then((_) {
-      setState(() {
-        if (pageNum == 0) {
-          dataList.clear();
-        }
-        Log.i(_TAG, "WxPublicAccountArticle: ${r.toString()}");
-        dataList.addAll(r.datas);
-        pageNum++;
-      });
+    setState(() {
+      if (pageNum == 0) {
+        dataList.clear();
+      }
+      Log.i(_TAG, "WxPublicAccountArticle: ${r.toString()}");
+      dataList.addAll(r.datas);
+      pageNum++;
     });
+    return null;
+//    Completer completer = Completer();
+//    Timer(Duration(seconds: 3), () => completer.complete(null));
+//    return completer.future.then((_) {});
   }
 
   @override

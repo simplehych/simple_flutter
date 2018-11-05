@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class GlobalColors {
   static const int white = 0xffffffff;
-
-  static const int primaryValue = 0xFF24292E;
-  static const int primaryLightValue = 0xFF42464b;
-  static const int primaryDarkValue = 0xFF121917;
+  static const int primaryValue = 0xFF42464b;
+  static const int primaryLightValue = 0xFFBBDEFB;
+  static const int primaryDarkValue = 0xFF1565C0;
 
   static const MaterialColor primarySwatch = const MaterialColor(
     primaryValue,
@@ -22,4 +21,5 @@ class GlobalColors {
       900: const Color(primaryDarkValue),
     },
   );
+
 }

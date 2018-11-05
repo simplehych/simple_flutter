@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/manager/navigator_manager.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/sp/sp_storage.dart';
-import 'package:simple_flutter/style/global_style.dart';
+import 'package:simple_flutter/style/global_colors.dart';
 import 'package:simple_flutter/utils/log.dart';
 
 /// 开屏页

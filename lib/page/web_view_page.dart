@@ -50,7 +50,6 @@ class _WebViewPageState extends State<WebViewPage> {
             ),
             withZoom: true,
             withJavascript: true,
-            withLocalUrl: true,
           ),
         );
       },

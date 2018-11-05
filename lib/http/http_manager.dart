@@ -35,7 +35,7 @@ class HttpManager {
         method: METHOD_POST, data: params, needFormData: needFormData);
   }
 
-  static _request(
+  static Future _request(
     String url,
     Function callback, {
     String method,

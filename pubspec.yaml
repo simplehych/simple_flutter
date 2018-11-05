@@ -47,6 +47,9 @@ dependencies:
   # WebView
   flutter_webview_plugin: ^0.2.1+2
 
+  # 加载样式
+  flutter_spinkit: ^3.0.0
+
 
 dev_dependencies:
   #flutter_test:
@@ -73,8 +76,8 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-  - assets/air-hostess.png
-  - assets/airplane.png
+  - assets/images/air-hostess.png
+  - assets/images/airplane.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -22,8 +22,14 @@ class Address {
   }
 
   /// 获取最新项目
-  static getLatestProjects(String pageNum) {
-    String shortPath = "/article/listproject/$pageNum/json";
+  static getLatestProjects(int pageNum) {
+    String shortPath = "/article/listproject/${pageNum.toString()}/json";
+    return "$HOST$shortPath";
+  }
+
+  /// 首页文章列表
+  static getHomeArticles(int pageNum) {
+    String shortPath = "/article/list/${pageNum.toString()}/json";
     return "$HOST$shortPath";
   }
 }

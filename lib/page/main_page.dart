@@ -6,6 +6,7 @@ import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/model/wx_public_account.dart';
+import 'package:simple_flutter/page/latest_project_page.dart';
 import 'package:simple_flutter/page/wx_public_account_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
@@ -43,6 +44,12 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.brown,
       ),
       BottomNavigationBarItem(
+        icon: Icon(Icons.assignment, color: Colors.grey),
+        title: Text("latest"),
+        activeIcon: Icon(Icons.assignment, color: Colors.blue),
+        backgroundColor: Colors.brown,
+      ),
+      BottomNavigationBarItem(
         icon: Icon(Icons.wallpaper, color: Colors.grey),
         title: Text("wx"),
         activeIcon: Icon(Icons.wallpaper, color: Colors.blue),
@@ -68,6 +75,7 @@ class _MainPageState extends State<MainPage> {
                 Center(
                   child: Text("home"),
                 ),
+                LatestProjectPage(),
                 WxPublicAccountPage(),
 //              Center(),
                 Center(

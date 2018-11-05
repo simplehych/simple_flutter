@@ -12,7 +12,7 @@ import 'package:simple_flutter/page/guide_page.dart';
 import 'package:simple_flutter/page/main_page.dart';
 import 'package:simple_flutter/page/ad_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:simple_flutter/style/global_style.dart';
+import 'package:simple_flutter/style/global_colors.dart';
 import 'package:simple_flutter/style/string/strings.dart';
 import 'package:simple_flutter/utils/toast.dart';
 
