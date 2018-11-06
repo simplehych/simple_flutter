@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:simple_flutter/widget/base_list/base_list_widget.dart';
 
@@ -6,25 +8,27 @@ abstract class BaseListState<T extends StatefulWidget> extends State<T> {
   int pageNum = 0;
 
   List dataList = new List();
-  BaseListConfig config = BaseListConfig();
+  BaseListConfig defaultConfig = BaseListConfig();
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
-    config = BaseListConfig(
+    defaultConfig = BaseListConfig(
       dataList: new List(),
       needRefreshHead: false,
       needLoadMore: true,
       refreshKey: refreshIndicatorKey,
-      onRefresh: onRefresh,
+      onRefresh: () {
+        return onRefresh();
+      },
       onLoadMore: onLoadMore,
       haveMoreData: true,
     );
-    assert(config.dataList != null);
+
     super.initState();
-    if (config.dataList.length == 0) {
-//      showRefreshIndicator();
+    if (defaultConfig.dataList.length == 0 && isRefreshFirst) {
+      showRefreshIndicator();
     }
   }
 
@@ -34,7 +38,10 @@ abstract class BaseListState<T extends StatefulWidget> extends State<T> {
   }
 
   showRefreshIndicator() {
-    refreshIndicatorKey.currentState.show();
+    // 需要延迟？？？否则 refreshIndicatorKey为null？？？
+    Future.delayed(Duration(seconds: 0), () {
+      refreshIndicatorKey?.currentState?.show();
+    });
   }
 
   Future<Null> onRefresh() async {
@@ -43,14 +50,17 @@ abstract class BaseListState<T extends StatefulWidget> extends State<T> {
 
     pageNum = 0;
     List datas = await requestData(RequestType.REFRESH);
-    setState(() {
-      config.dataList.clear();
-      config.dataList.addAll(datas);
-      dataList = config.dataList;
-    });
 
-    isLoading = false;
-    return null;
+    Completer completer = Completer();
+    completer.complete();
+    return completer.future.then((_) {
+      isLoading = false;
+      setState(() {
+        defaultConfig.dataList.clear();
+        defaultConfig.dataList.addAll(datas);
+        dataList = defaultConfig.dataList;
+      });
+    });
   }
 
   Future<Null> onLoadMore() async {
@@ -61,17 +71,21 @@ abstract class BaseListState<T extends StatefulWidget> extends State<T> {
     List datas = await requestData(RequestType.REFRESH);
     setState(() {
       if (datas != null) {
-        config.dataList.addAll(datas);
+        defaultConfig.dataList?.addAll(datas);
       } else {
-        config.haveMoreData = false;
+        defaultConfig.haveMoreData = false;
       }
-      dataList = config.dataList;
+      dataList = defaultConfig.dataList;
     });
 
     isLoading = false;
     return null;
   }
 
+  @protected
+  bool get isRefreshFirst;
+
+  @protected
   requestData(RequestType type);
 }
 

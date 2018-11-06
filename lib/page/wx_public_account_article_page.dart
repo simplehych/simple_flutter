@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/manager/navigator_manager.dart';
-import 'package:simple_flutter/model/wx_public_account_article.dart';
+import 'package:simple_flutter/model/item_list_bean.dart';
 import 'package:simple_flutter/page/wx_public_account_search_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/utils/log.dart';
@@ -27,7 +27,7 @@ class WxPublicAccountArticlePageState
     extends State<WxPublicAccountArticlePage> {
   static const String _TAG = "_WxPublicAccountArticlePageState";
 
-  List<Data> dataList = new List();
+  List<ItemBean> dataList = new List();
   int pageNum = 0;
   ScrollController _controller = new ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicator = GlobalKey();
@@ -62,7 +62,7 @@ class WxPublicAccountArticlePageState
   fetchData() async {
     var res = await HttpManager.get(
         Address.getHistoryOnWxPubAccount(widget.wxPublicAccountId, pageNum));
-    WxPublicAccountArticle r = WxPublicAccountArticle.fromJson(res.data);
+    ItemListBean r = ItemListBean.fromJson(res.data);
     setState(() {
       if (pageNum == 0) {
         dataList.clear();

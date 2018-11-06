@@ -6,7 +6,9 @@ import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/model/wx_public_account.dart';
+import 'package:simple_flutter/page/home_page.dart';
 import 'package:simple_flutter/page/latest_project_page.dart';
+import 'package:simple_flutter/page/mine_page.dart';
 import 'package:simple_flutter/page/wx_public_account_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
@@ -72,15 +74,10 @@ class _MainPageState extends State<MainPage> {
             ),
             body: IndexedStack(
               children: <Widget>[
-                Center(
-                  child: Text("home"),
-                ),
+                HomePage(),
                 LatestProjectPage(),
                 WxPublicAccountPage(),
-//              Center(),
-                Center(
-                  child: Text("mine"),
-                ),
+                MinePage(),
               ],
               index: _tabIndex,
             ),

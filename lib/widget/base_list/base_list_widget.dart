@@ -8,7 +8,7 @@ class BaseListWidget extends StatefulWidget {
   BaseListConfig config;
   IndexedWidgetBuilder itemBuilder;
 
-  BaseListWidget(this.itemBuilder, this.config);
+  BaseListWidget(this.config, this.itemBuilder);
 
   @override
   State<StatefulWidget> createState() {
@@ -37,10 +37,19 @@ class _BaseListWidgetState extends State<BaseListWidget> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (widget.config.onRefresh == null) {
+      widget.config.onRefresh = () {};
+    }
     return RefreshIndicator(
       // 使用key做主动刷新
-//      key: widget.config.refreshKey,
+      key: widget.config.refreshKey,
       // 下拉刷新，有返回结果决定刷新动画结束，接收到则刷新动画结束，如果是异步且没有返回则马上结束动画
       onRefresh: widget.config.onRefresh,
       child: ListView.builder(
@@ -52,8 +61,16 @@ class _BaseListWidgetState extends State<BaseListWidget> {
     );
   }
 
+  _getDataListLength() {
+    if (widget.config.dataList == null || widget.config.dataList.isEmpty) {
+      return 0;
+    } else {
+      return widget.config.dataList.length;
+    }
+  }
+
   _getItemCount() {
-    int length = widget.config.dataList.length;
+    int length = _getDataListLength();
     if (widget.config.needRefreshHead) {
       return length > 0 ? length + 2 : length + 1;
     } else {
@@ -63,11 +80,13 @@ class _BaseListWidgetState extends State<BaseListWidget> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    int length = widget.config.dataList.length;
+    int length = _getDataListLength();
     bool needRefreshHead = widget.config.needRefreshHead;
-    if (needRefreshHead && index == length && length != 0) {
+    if (!needRefreshHead && index == length && length != 0) {
+      // 如果不需要头部，并且数据不为0，当index等于数据长度时(index从0开始)，渲染加载更多Item
       return _buildLoadMoreIndicator();
     } else if (needRefreshHead && index == _getItemCount() - 1 && length != 0) {
+      // 如果需要头部，并且数据不为0，当index等于实际渲染长度-1时，渲染加载更多Item
       return _buildLoadMoreIndicator();
     } else if (length == 0) {
       return _buildEmpty();
@@ -78,7 +97,7 @@ class _BaseListWidgetState extends State<BaseListWidget> {
 
   _buildEmpty() {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height - 200.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -88,8 +107,11 @@ class _BaseListWidgetState extends State<BaseListWidget> {
               width: 70.0,
               height: 70.0,
             ),
-            onPressed: () {},
+            onPressed: () {
+              widget.config.refreshKey?.currentState?.show();
+            },
           ),
+          Container(height: 10.0),
           Text(
             Strings.of(context).empty(),
             style: GlobalTextStyle.normal,
@@ -110,14 +132,12 @@ class _BaseListWidgetState extends State<BaseListWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   haveMoreData
-                      ? SpinKitRotatingCircle(itemBuilder: (context, i) {
-                          return DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: i.isEven ? Colors.red : Colors.green),
-                          );
-                        })
+                      ? SpinKitWave(
+                          size: 20.0,
+                          color: Colors.grey,
+                          type: SpinKitWaveType.start)
                       : Container(),
-                  Container(width: 5.0),
+                  Container(width: 10.0),
                   Text(
                       haveMoreData
                           ? Strings.of(context).loadMoreText()
@@ -134,7 +154,7 @@ class BaseListConfig {
   List dataList = new List();
   bool needRefreshHead = false;
   bool needLoadMore = true;
-  Key refreshKey;
+  GlobalKey<RefreshIndicatorState> refreshKey;
   RefreshCallback onRefresh;
   RefreshCallback onLoadMore;
   bool haveMoreData = true;

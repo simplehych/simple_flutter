@@ -1,18 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wx_public_account_article.dart';
+part of 'item_list_bean.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-WxPublicAccountArticle _$WxPublicAccountArticleFromJson(
-    Map<String, dynamic> json) {
-  return WxPublicAccountArticle(
+ItemListBean _$ItemListBeanFromJson(Map<String, dynamic> json) {
+  return ItemListBean(
       json['curPage'] as int,
       (json['datas'] as List)
           ?.map((e) =>
-              e == null ? null : Data.fromJson(e as Map<String, dynamic>))
+              e == null ? null : ItemBean.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       json['offset'] as int,
       json['over'] as bool,
@@ -21,8 +20,7 @@ WxPublicAccountArticle _$WxPublicAccountArticleFromJson(
       json['total'] as int);
 }
 
-Map<String, dynamic> _$WxPublicAccountArticleToJson(
-        WxPublicAccountArticle instance) =>
+Map<String, dynamic> _$ItemListBeanToJson(ItemListBean instance) =>
     <String, dynamic>{
       'curPage': instance.curPage,
       'datas': instance.datas,
@@ -33,8 +31,8 @@ Map<String, dynamic> _$WxPublicAccountArticleToJson(
       'total': instance.total
     };
 
-Data _$DatasFromJson(Map<String, dynamic> json) {
-  return Data(
+ItemBean _$ItemBeanFromJson(Map<String, dynamic> json) {
+  return ItemBean(
       json['apkLink'] as String,
       json['author'] as String,
       json['chapterId'] as int,
@@ -53,8 +51,8 @@ Data _$DatasFromJson(Map<String, dynamic> json) {
       json['superChapterId'] as int,
       json['superChapterName'] as String,
       (json['tags'] as List)
-          ?.map((e) =>
-              e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
+          ?.map(
+              (e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       json['title'] as String,
       json['type'] as int,
@@ -63,7 +61,7 @@ Data _$DatasFromJson(Map<String, dynamic> json) {
       json['zan'] as int);
 }
 
-Map<String, dynamic> _$DatasToJson(Data instance) => <String, dynamic>{
+Map<String, dynamic> _$ItemBeanToJson(ItemBean instance) => <String, dynamic>{
       'apkLink': instance.apkLink,
       'author': instance.author,
       'chapterId': instance.chapterId,
@@ -89,9 +87,9 @@ Map<String, dynamic> _$DatasToJson(Data instance) => <String, dynamic>{
       'zan': instance.zan
     };
 
-Tag _$TagsFromJson(Map<String, dynamic> json) {
+Tag _$TagFromJson(Map<String, dynamic> json) {
   return Tag(json['name'] as String, json['url'] as String);
 }
 
-Map<String, dynamic> _$TagsToJson(Tag instance) =>
+Map<String, dynamic> _$TagToJson(Tag instance) =>
     <String, dynamic>{'name': instance.name, 'url': instance.url};

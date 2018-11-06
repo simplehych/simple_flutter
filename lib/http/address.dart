@@ -32,4 +32,10 @@ class Address {
     String shortPath = "/article/list/${pageNum.toString()}/json";
     return "$HOST$shortPath";
   }
+
+  /// 首页轮播图
+  static getHomeBanner() {
+    String shortPath = "/banner/json";
+    return "$HOST$shortPath";
+  }
 }

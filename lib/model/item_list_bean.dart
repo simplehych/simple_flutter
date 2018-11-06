@@ -1,16 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'wx_public_account_article.g.dart';
-
+part 'item_list_bean.g.dart';
 
 @JsonSerializable()
-class WxPublicAccountArticle extends Object {
-
+class ItemListBean extends Object {
   @JsonKey(name: 'curPage')
   int curPage;
 
   @JsonKey(name: 'datas')
-  List<Data> datas;
+  List<ItemBean> datas;
 
   @JsonKey(name: 'offset')
   int offset;
@@ -27,24 +25,29 @@ class WxPublicAccountArticle extends Object {
   @JsonKey(name: 'total')
   int total;
 
-  WxPublicAccountArticle(this.curPage,this.datas,this.offset,this.over,this.pageCount,this.size,this.total,);
+  ItemListBean(
+    this.curPage,
+    this.datas,
+    this.offset,
+    this.over,
+    this.pageCount,
+    this.size,
+    this.total,
+  );
 
-  factory WxPublicAccountArticle.fromJson(Map<String, dynamic> srcJson) => _$WxPublicAccountArticleFromJson(srcJson);
+  factory ItemListBean.fromJson(Map<String, dynamic> srcJson) =>
+      _$ItemListBeanFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$WxPublicAccountArticleToJson(this);
+  Map<String, dynamic> toJson() => _$ItemListBeanToJson(this);
 
   @override
   String toString() {
     return 'WxPublicAccountArticle{curPage: $curPage, datas: $datas, offset: $offset, over: $over, pageCount: $pageCount, size: $size, total: $total}';
   }
-
-
 }
 
-
 @JsonSerializable()
-class Data extends Object {
-
+class ItemBean extends Object {
   @JsonKey(name: 'apkLink')
   String apkLink;
 
@@ -114,31 +117,53 @@ class Data extends Object {
   @JsonKey(name: 'zan')
   int zan;
 
-  Data(this.apkLink,this.author,this.chapterId,this.chapterName,this.collect,this.courseId,this.desc,this.envelopePic,this.fresh,this.id,this.link,this.niceDate,this.origin,this.projectLink,this.publishTime,this.superChapterId,this.superChapterName,this.tags,this.title,this.type,this.userId,this.visible,this.zan,);
 
-  factory Data.fromJson(Map<String, dynamic> srcJson) => _$DatasFromJson(srcJson);
+  ItemBean(
+    this.apkLink,
+    this.author,
+    this.chapterId,
+    this.chapterName,
+    this.collect,
+    this.courseId,
+    this.desc,
+    this.envelopePic,
+    this.fresh,
+    this.id,
+    this.link,
+    this.niceDate,
+    this.origin,
+    this.projectLink,
+    this.publishTime,
+    this.superChapterId,
+    this.superChapterName,
+    this.tags,
+    this.title,
+    this.type,
+    this.userId,
+    this.visible,
+    this.zan,
+  );
 
-  Map<String, dynamic> toJson() => _$DatasToJson(this);
+  factory ItemBean.fromJson(Map<String, dynamic> srcJson) =>
+      _$ItemBeanFromJson(srcJson);
 
-
-
-
+  Map<String, dynamic> toJson() => _$ItemBeanToJson(this);
 }
-
 
 @JsonSerializable()
 class Tag extends Object {
-
   @JsonKey(name: 'name')
   String name;
 
   @JsonKey(name: 'url')
   String url;
 
-  Tag(this.name,this.url,);
+  Tag(
+    this.name,
+    this.url,
+  );
 
-  factory Tag.fromJson(Map<String, dynamic> srcJson) => _$TagsFromJson(srcJson);
+  factory Tag.fromJson(Map<String, dynamic> srcJson) => _$TagFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$TagsToJson(this);
-
+  Map<String, dynamic> toJson() => _$TagToJson(this);
 }

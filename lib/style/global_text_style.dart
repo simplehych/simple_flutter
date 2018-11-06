@@ -8,11 +8,22 @@ class GlobalTextStyle {
   static const _smallSize = 14.0;
   static const _minSize = 12.0;
 
-  static const _normalColor = Color(0xFFFFFFFF);
-  static const _subColor = Color(0x999999);
+  static const _normalColor = Color(0xFF000000);
+  static const _subColor = Color(0xFF999999);
+
+  static const big = TextStyle(
+    fontSize: _bigSize,
+    color: _normalColor,
+    fontWeight: FontWeight.bold,
+  );
 
   static const normal = TextStyle(
-    color: _normalColor,
     fontSize: _normalSize,
+    color: _normalColor,
+  );
+
+  static const small = TextStyle(
+    fontSize: _smallSize,
+    color: _subColor,
   );
 }
