@@ -20,4 +20,9 @@ class StringEn extends StringBase {
   String noMoreData() {
     return "no more data";
   }
+
+  @override
+  String selectTheme() {
+    return "Select Theme";
+  }
 }

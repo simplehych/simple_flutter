@@ -20,4 +20,9 @@ class StringZh extends StringBase {
   String noMoreData() {
     return "没有更多数据";
   }
+
+  @override
+  String selectTheme() {
+    return "选择主题";
+  }
 }

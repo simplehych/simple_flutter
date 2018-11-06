@@ -3,4 +3,5 @@ abstract class StringBase {
   String empty();
   String loadMoreText();
   String noMoreData();
+  String selectTheme();
 }

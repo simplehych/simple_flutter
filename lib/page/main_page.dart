@@ -38,35 +38,39 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<BottomNavigationBarItem> _navigationViews = <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home, color: Colors.grey),
-        title: Text("home"),
-        activeIcon: Icon(Icons.home, color: Colors.blue),
-        backgroundColor: Colors.brown,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.assignment, color: Colors.grey),
-        title: Text("latest"),
-        activeIcon: Icon(Icons.assignment, color: Colors.blue),
-        backgroundColor: Colors.brown,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.wallpaper, color: Colors.grey),
-        title: Text("wx"),
-        activeIcon: Icon(Icons.wallpaper, color: Colors.blue),
-        backgroundColor: Colors.brown,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.account_circle, color: Colors.grey),
-        title: Text("mine"),
-        activeIcon: Icon(Icons.account_circle, color: Colors.blue),
-        backgroundColor: Colors.brown,
-      ),
-    ];
+    _navigationViews(themeColor) {
+
+      return <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home, color: Colors.grey),
+          title: Text("home"),
+          activeIcon: Icon(Icons.home, color: themeColor),
+          backgroundColor: Colors.brown,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.assignment, color: Colors.grey),
+          title: Text("latest"),
+          activeIcon: Icon(Icons.assignment, color: themeColor),
+          backgroundColor: Colors.brown,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.wallpaper, color: Colors.grey),
+          title: Text("wx"),
+          activeIcon: Icon(Icons.wallpaper, color: themeColor),
+          backgroundColor: Colors.brown,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle, color: Colors.grey),
+          title: Text("mine"),
+          activeIcon: Icon(Icons.account_circle, color: themeColor),
+          backgroundColor: Colors.brown,
+        ),
+      ];
+    }
 
     return StoreBuilder<GlobalState>(
       builder: (context, store) {
+        Color themeColor = store.state.themeData.primaryColor;
         return WillPopScope(
           child: Scaffold(
             appBar: AppBar(
@@ -83,10 +87,10 @@ class _MainPageState extends State<MainPage> {
             ),
             bottomNavigationBar: Container(
               child: BottomNavigationBar(
-                items: _navigationViews,
+                items: _navigationViews(themeColor),
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _tabIndex,
-                fixedColor: Colors.blue,
+                fixedColor: themeColor,
                 onTap: (index) {
                   setState(() {
                     _tabIndex = index;
