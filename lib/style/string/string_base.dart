@@ -1,7 +1,44 @@
 abstract class StringBase {
-  String networkErrorUnknown();
-  String empty();
-  String loadMoreText();
-  String noMoreData();
-  String selectTheme();
+  appName();
+
+  mainTabHome();
+
+  mainTabLatest();
+
+  mainTabWx();
+
+  mainTabMine();
+
+  networkErrorUnknown();
+
+  empty();
+
+  loadMoreText();
+
+  noMoreData();
+
+  selectTheme();
+
+  theme();
+  themeBlue();
+
+  themeGreen();
+
+  themeBrown();
+
+  themeRed();
+
+  themeAmber();
+
+  themeIndigo();
+
+  themeDark();
+
+  language();
+
+  languageEn();
+
+  languageZh();
+
+  about();
 }

@@ -80,3 +80,17 @@ A: withLocalUrl 是否设置该参数，默认为false没有问题
 Q: 不满一屏幕时，通过_scrollController.addListener()不能触发滚动监听
 
 A: 待解决
+
+Q: children: allSections.map<Widget>((Section section) {
+                             return Column(
+                               crossAxisAlignment: CrossAxisAlignment.stretch,
+                               children: _detailItemsFor(section).toList(),
+                             );
+                           }).toList()
+                           
+A: 常用转换手法
+
+
+Q: Center child只有一个布局时才生效，使用Row和Column都无效。。。。。
+
+A: ???????

@@ -13,6 +13,7 @@ import 'package:simple_flutter/page/wx_public_account_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
 import 'package:simple_flutter/storage/sp/sp_storage.dart';
+import 'package:simple_flutter/style/string/strings.dart';
 import 'package:simple_flutter/utils/log.dart';
 
 class MainPage extends StatefulWidget {
@@ -39,29 +40,28 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     _navigationViews(themeColor) {
-
       return <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home, color: Colors.grey),
-          title: Text("home"),
+          title: Text(Strings.of(context).mainTabHome()),
           activeIcon: Icon(Icons.home, color: themeColor),
           backgroundColor: Colors.brown,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.assignment, color: Colors.grey),
-          title: Text("latest"),
+          title: Text(Strings.of(context).mainTabLatest()),
           activeIcon: Icon(Icons.assignment, color: themeColor),
           backgroundColor: Colors.brown,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.wallpaper, color: Colors.grey),
-          title: Text("wx"),
+          title: Text(Strings.of(context).mainTabWx()),
           activeIcon: Icon(Icons.wallpaper, color: themeColor),
           backgroundColor: Colors.brown,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle, color: Colors.grey),
-          title: Text("mine"),
+          title: Text(Strings.of(context).mainTabMine()),
           activeIcon: Icon(Icons.account_circle, color: themeColor),
           backgroundColor: Colors.brown,
         ),
@@ -73,9 +73,6 @@ class _MainPageState extends State<MainPage> {
         Color themeColor = store.state.themeData.primaryColor;
         return WillPopScope(
           child: Scaffold(
-            appBar: AppBar(
-              title: Text("wanandroid"),
-            ),
             body: IndexedStack(
               children: <Widget>[
                 HomePage(),

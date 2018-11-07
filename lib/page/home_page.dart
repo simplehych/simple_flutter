@@ -8,6 +8,7 @@ import 'package:simple_flutter/model/home_banner_bean.dart';
 import 'package:simple_flutter/model/item_list_bean.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/style/global_icons.dart';
+import 'package:simple_flutter/style/string/strings.dart';
 import 'package:simple_flutter/utils/toast.dart';
 import 'package:simple_flutter/widget/base_list/base_list_state.dart';
 import 'package:simple_flutter/widget/base_list/base_list_widget.dart';
@@ -51,14 +52,19 @@ class _HomePageState extends BaseListState<HomePage> {
   Widget build(BuildContext context) {
     return StoreBuilder<GlobalState>(
       builder: (context, i) {
-        return BaseListWidget(defaultConfig, (context, i) {
-          ItemBean data = dataList[i];
-          if (i == 0) {
-            return BannerItem(bannerList);
-          } else {
-            return HomeItem(data);
-          }
-        });
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(Strings.of(context).appName()),
+          ),
+          body: BaseListWidget(defaultConfig, (context, i) {
+            ItemBean data = dataList[i];
+            if (i == 0) {
+              return BannerItem(bannerList);
+            } else {
+              return HomeItem(data);
+            }
+          }),
+        );
       },
     );
   }

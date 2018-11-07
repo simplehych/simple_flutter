@@ -2,16 +2,16 @@ import 'package:redux/redux.dart';
 import 'package:flutter/material.dart';
 
 final LocaleReducer = combineReducers<Locale>([
-  TypedReducer<Locale, RefreshLocalAction>(_refresh),
+  TypedReducer<Locale, RefreshLocaleAction>(_refresh),
 ]);
 
-Locale _refresh(Locale locale, RefreshLocalAction action) {
+Locale _refresh(Locale locale, RefreshLocaleAction action) {
   locale = action.locale;
   return locale;
 }
 
-class RefreshLocalAction {
+class RefreshLocaleAction {
   final Locale locale;
 
-  RefreshLocalAction(this.locale);
+  RefreshLocaleAction(this.locale);
 }

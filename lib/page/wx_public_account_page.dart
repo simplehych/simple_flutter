@@ -4,6 +4,7 @@ import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
 import 'package:simple_flutter/model/wx_public_account.dart';
+import 'package:simple_flutter/page/animation/home.dart';
 import 'package:simple_flutter/page/wx_public_account_article_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/storage/db/provider/wx_public_account_db_provider.dart';
@@ -54,26 +55,27 @@ class _WxPublicAccountPageState extends State<WxPublicAccountPage> {
           Log.i(_TAG, "ListView.builder dataList==null");
           return Container();
         }
-        return ListView.builder(
-          padding: EdgeInsets.all(16.0),
-          itemBuilder: (context, i) {
-            assert(dataList != null);
-            Log.i(_TAG,
-                "ListView.builder dataList[$i] ${dataList[i].toString()}");
-            WxPublicAccount data = WxPublicAccount.fromJson(dataList[i]);
-            return RaisedButton(
-              child: Center(
-                child: Text(data.name),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                  return WxPublicAccountArticlePage(data.id,data.name);
-                }));
-              },
-            );
-          },
-          itemCount: dataList.length,
-        );
+        return AnimationDemoHome(dataList);
+//        return ListView.builder(
+//          padding: EdgeInsets.all(16.0),
+//          itemBuilder: (context, i) {
+//            assert(dataList != null);
+//            Log.i(_TAG,
+//                "ListView.builder dataList[$i] ${dataList[i].toString()}");
+//            WxPublicAccount data = WxPublicAccount.fromJson(dataList[i]);
+//            return RaisedButton(
+//              child: Center(
+//                child: Text(data.name),
+//              ),
+//              onPressed: () {
+//                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+//                  return WxPublicAccountArticlePage(data.id,data.name);
+//                }));
+//              },
+//            );
+//          },
+//          itemCount: dataList.length,
+//        );
       },
     );
   }

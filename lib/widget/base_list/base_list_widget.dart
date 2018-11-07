@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_flutter/style/global_colors.dart';
 import 'package:simple_flutter/style/global_icons.dart';
 import 'package:simple_flutter/style/global_text_style.dart';
 import 'package:simple_flutter/style/string/strings.dart';
@@ -114,7 +115,7 @@ class _BaseListWidgetState extends State<BaseListWidget> {
           Container(height: 10.0),
           Text(
             Strings.of(context).empty(),
-            style: GlobalTextStyle.normal,
+            style: GlobalTextStyle.theme(context),
           ),
         ],
       ),
@@ -134,7 +135,7 @@ class _BaseListWidgetState extends State<BaseListWidget> {
                   haveMoreData
                       ? SpinKitWave(
                           size: 20.0,
-                          color: Colors.grey,
+                          color: GlobalColors.theme(context),
                           type: SpinKitWaveType.start)
                       : Container(),
                   Container(width: 10.0),
@@ -142,7 +143,7 @@ class _BaseListWidgetState extends State<BaseListWidget> {
                       haveMoreData
                           ? Strings.of(context).loadMoreText()
                           : Strings.of(context).empty(),
-                      style: GlobalTextStyle.normal),
+                      style: GlobalTextStyle.theme(context))
                 ],
               ),
       ),

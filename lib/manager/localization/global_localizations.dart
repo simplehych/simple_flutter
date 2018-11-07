@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_flutter/style/string/string_base.dart';
 import 'package:simple_flutter/style/string/string_en.dart';
+import 'package:simple_flutter/style/string/string_zh.dart';
 
 class GlobalLocalizations {
   final Locale locale;
@@ -9,7 +10,7 @@ class GlobalLocalizations {
 
   static Map<String, StringBase> _localizedValues = {
     'en': new StringEn(),
-    'zh': new StringEn(),
+    'zh': new StringZh(),
   };
 
   StringBase get currentLocalized {

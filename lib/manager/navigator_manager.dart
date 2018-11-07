@@ -22,10 +22,10 @@ class NavigatorManager {
 
   /// webview页面
   static goWebViewPage(BuildContext context, String title, String link) {
-    _goPage(context, WebViewPage(title, link));
+    goPage(context, WebViewPage(title, link));
   }
 
-  static _goPage(BuildContext context, Widget page) {
+  static goPage(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return page;
     }));

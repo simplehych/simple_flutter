@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:simple_flutter/redux/global_state.dart';
 
 class GlobalColors {
   static const int white = 0xffffffff;
@@ -6,6 +8,10 @@ class GlobalColors {
   static const int primaryLightValue = 0xFFBBDEFB;
   static const int primaryValue = 0xFF2196F3;
   static const int primaryDarkValue = 0xFF1565C0;
+
+  static Color theme(BuildContext context) {
+    return StoreProvider.of<GlobalState>(context).state.themeData.primaryColor;
+  }
 
   static const MaterialColor primarySwatch = const MaterialColor(
     primaryValue,
@@ -38,5 +44,4 @@ class GlobalColors {
       900: const Color(0xFF121917),
     },
   );
-
 }

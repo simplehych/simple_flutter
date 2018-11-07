@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_flutter/style/global_colors.dart';
 
 class GlobalTextStyle {
   static const _maxSize = 30.0;
@@ -10,6 +11,14 @@ class GlobalTextStyle {
 
   static const _normalColor = Color(0xFF000000);
   static const _subColor = Color(0xFF999999);
+
+
+  static TextStyle theme(BuildContext context){
+    return TextStyle(
+      fontSize: _normalSize,
+      color: GlobalColors.theme(context),
+    );
+  }
 
   static const big = TextStyle(
     fontSize: _bigSize,
