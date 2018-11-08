@@ -25,8 +25,8 @@ class NavigatorManager {
     goPage(context, WebViewPage(title, link));
   }
 
-  static goPage(BuildContext context, Widget page) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+  static Future goPage(BuildContext context, Widget page) async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return page;
     }));
   }

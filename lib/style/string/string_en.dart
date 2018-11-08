@@ -110,4 +110,14 @@ class StringEn extends StringBase {
   about() {
     return "About";
   }
+
+  @override
+  login() {
+    return "Login";
+  }
+
+  @override
+  register() {
+    return "Register";
+  }
 }

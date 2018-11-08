@@ -29,7 +29,7 @@ class HttpManager {
 
   static post(String url,
       {Map<String, dynamic> params,
-      bool needFormData,
+      bool needFormData = true,
       Function callback}) async {
     return await _request(url, callback,
         method: METHOD_POST, data: params, needFormData: needFormData);
@@ -40,7 +40,7 @@ class HttpManager {
     Function callback, {
     String method,
     data,
-    bool needFormData,
+    bool needFormData = true,
     Function errorCallback,
   }) async {
     Log.i(_TAG, '''

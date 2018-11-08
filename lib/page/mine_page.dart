@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/manager/navigator_manager.dart';
 import 'package:simple_flutter/manager/store_manager.dart';
+import 'package:simple_flutter/manager/theme_data_manager.dart';
 import 'package:simple_flutter/page/animation/home.dart';
 import 'package:simple_flutter/page/example/status_bar_example.dart';
+import 'package:simple_flutter/page/login_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/style/global_colors.dart';
 import 'package:simple_flutter/style/string/strings.dart';
+import 'package:simple_flutter/utils/log.dart';
 import 'package:simple_flutter/utils/toast.dart';
 import 'package:simple_flutter/widget/icon/user_icon.dart';
 
@@ -18,6 +21,9 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
+  static const String _TAG = "_MinePageState";
+  String username;
+
   @override
   void initState() {
     super.initState();
@@ -55,8 +61,25 @@ class _MinePageState extends State<MinePage> {
                       height: 200.0,
                       color: store.state.themeData.primaryColor,
                       child: Center(
-                        child: UserIcon(width: 50.0, height: 50.0),
-                      ));
+                          child: FlatButton(
+                        onPressed: () async {
+                          username = await NavigatorManager.goPage(
+                              context, LoginPage());
+                          setState(() {});
+                        },
+                        child: Column(
+                          children: <Widget>[
+                            UserIcon(width: 50.0, height: 50.0),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            DefaultTextStyle(
+                              style: DefaultTextStyle.of(context).style,
+                              child: Text("点我点我"),
+                            ),
+                          ],
+                        ),
+                      )));
                 }
                 MineTileBean data = dataList[i - 1];
                 return ListTile(
@@ -80,21 +103,21 @@ class _MinePageState extends State<MinePage> {
           color: color,
         ),
         title: Text(str),
-        onTap: () {
-          StoreManager.refreshTheme(context, color);
+        onTap: () async {
+          await StoreManager.refreshTheme(context, color);
           Navigator.pop(context);
         },
       );
     }
 
     Map map = new Map();
-    map[GlobalColors.primarySwatch] = Strings.of(context).themeBlue();
-    map[Colors.green] = Strings.of(context).themeGreen();
-    map[Colors.brown] = Strings.of(context).themeBrown();
-    map[Colors.red] = Strings.of(context).themeRed();
-    map[Colors.amber] = Strings.of(context).themeAmber();
-    map[Colors.indigo] = Strings.of(context).themeIndigo();
-    map[GlobalColors.darkSwatch] = Strings.of(context).themeDark();
+    map[ThemeDataManager.themeColorList[0]] = Strings.of(context).themeBlue();
+    map[ThemeDataManager.themeColorList[1]] = Strings.of(context).themeGreen();
+    map[ThemeDataManager.themeColorList[2]] = Strings.of(context).themeBrown();
+    map[ThemeDataManager.themeColorList[3]] = Strings.of(context).themeRed();
+    map[ThemeDataManager.themeColorList[4]] = Strings.of(context).themeAmber();
+    map[ThemeDataManager.themeColorList[5]] = Strings.of(context).themeIndigo();
+    map[ThemeDataManager.themeColorList[6]] = Strings.of(context).themeDark();
 
     List<Widget> children = List();
     map.forEach((key, value) {

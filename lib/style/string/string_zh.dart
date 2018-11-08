@@ -110,4 +110,14 @@ class StringZh extends StringBase {
   about() {
     return "关于";
   }
+
+  @override
+  login() {
+    return "登录";
+  }
+
+  @override
+  register() {
+    return "注册";
+  }
 }

@@ -20,6 +20,7 @@ abstract class StringBase {
   selectTheme();
 
   theme();
+
   themeBlue();
 
   themeGreen();
@@ -41,4 +42,8 @@ abstract class StringBase {
   languageZh();
 
   about();
+
+  login();
+
+  register();
 }

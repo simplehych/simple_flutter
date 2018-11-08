@@ -6,6 +6,8 @@ import 'package:redux/redux.dart';
 import 'package:simple_flutter/event/http_error_event.dart';
 import 'package:simple_flutter/http/http_code.dart';
 import 'package:simple_flutter/manager/localization/global_localization_delegate.dart';
+import 'package:simple_flutter/manager/store_manager.dart';
+import 'package:simple_flutter/manager/theme_data_manager.dart';
 import 'package:simple_flutter/page/splash_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
 import 'package:simple_flutter/page/guide_page.dart';
@@ -23,10 +25,7 @@ class MyApp extends StatelessWidget {
   final Store<GlobalState> reduxStore = new Store<GlobalState>(
     appReducer,
     initialState: GlobalState(
-      themeData: ThemeData(
-        primarySwatch: GlobalColors.primarySwatch,
-        platform: TargetPlatform.iOS,
-      ),
+      themeData: ThemeDataManager.defTheme(),
       locale: Locale('zh', 'CH'),
     ),
   );
