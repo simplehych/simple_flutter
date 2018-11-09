@@ -94,3 +94,9 @@ A: 常用转换手法
 Q: Center child只有一个布局时才生效，使用Row和Column都无效。。。。。
 
 A: ???????
+
+
+
+Q: Duplicate GlobalKey detected in widget tree.
+
+A: 例如Login页面和Register页面， 取消掉Login页面的passwordGlobalKey就不会奔溃了，但还是会报错,TextFormField导致的，暂时处理方式都去掉

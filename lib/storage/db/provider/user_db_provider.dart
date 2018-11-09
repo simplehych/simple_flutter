@@ -36,8 +36,9 @@ class UserDbProvider extends BaseDbProvider {
   @override
   List<String> otherColumnSqlStr() {
     return [
-      "$columnName text not null",
-      "$columnMood text not null",
+      "$columnId",
+      "$columnName",
+      "$columnMood",
     ];
   }
 

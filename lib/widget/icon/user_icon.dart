@@ -8,7 +8,7 @@ class UserIcon extends StatelessWidget {
   final VoidCallback onPressed;
 
   UserIcon(
-      {this.imageUrl = "",
+      {this.imageUrl = "https://cdn.jsdelivr.net/gh/flutterchina/website@1.0/images/flutter-mark-square-100.png",
       this.width = 30.0,
       this.height = 30.0,
       this.onPressed});

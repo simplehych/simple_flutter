@@ -3,10 +3,16 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:simple_flutter/http/address.dart';
 import 'package:simple_flutter/http/base_result.dart';
 import 'package:simple_flutter/http/http_manager.dart';
+import 'package:simple_flutter/manager/constant.dart';
+import 'package:simple_flutter/manager/navigator_manager.dart';
+import 'package:simple_flutter/page/register_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
+import 'package:simple_flutter/storage/db/provider/user_db_provider.dart';
+import 'package:simple_flutter/storage/sp/sp_storage.dart';
 import 'package:simple_flutter/style/string/strings.dart';
 import 'package:simple_flutter/utils/log.dart';
 import 'package:simple_flutter/utils/toast.dart';
+import 'package:simple_flutter/widget/password_field.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,21 +24,29 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   static const String _TAG = "_LoginPageState";
   String name, password;
+  String initialName;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GlobalKey<FormFieldState<String>> _passwordFiledKey =
+  final GlobalKey<FormFieldState<String>> _loginpasswordFiledKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _loginuserFiledKey =
       GlobalKey<FormFieldState<String>>();
 
-  /// 自动校验会一直校验，应该影响性能，最后提交的时候校验即可
+  TextEditingController editingController = new TextEditingController();
+
+  /// 自动校验会一直校验，影响性能？？？？，最后提交的时候校验即可
   bool _autoValidate = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return StoreBuilder<GlobalState>(
       builder: (context, store) {
         return Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(
             title: Text(Strings.of(context).login()),
           ),
@@ -48,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     const SizedBox(height: 24.0),
                     TextFormField(
+                      key: _loginuserFiledKey,
+                      controller: editingController,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
                           border: UnderlineInputBorder(),
@@ -62,8 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 24.0),
                     PasswordField(
-                      key: _passwordFiledKey,
-                      helperText: "不能超过八个字符",
+//                      key: _loginpasswordFiledKey,
                       labelText: "密码",
                       decorationIcon: Icon(Icons.keyboard),
                       onSaved: (value) {
@@ -71,19 +86,22 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(height: 24.0),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "介绍你自己",
-                          helperText: "简单明了",
-                          labelText: "个性签名"),
-                    ),
-                    const SizedBox(height: 24.0),
                     Center(
                       child: RaisedButton(
-                        color: store.state.themeData.primaryColor,
                         child: Text("登录"),
                         onPressed: _handleSubmit,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: InkWell(
+                        child: Text("立即注册"),
+                        onTap: () async {
+                          String tmp = await NavigatorManager.goPage(
+                              context, RegisterPage());
+                          Log.i(_TAG, "tmp: $tmp");
+                          editingController.text = tmp;
+                        },
                       ),
                     ),
                   ],
@@ -103,7 +121,10 @@ class _LoginPageState extends State<LoginPage> {
       BaseResultData result = await HttpManager.post(Address.login(),
           params: {"username": name, "password": password});
       if (result.errorCode == 0) {
-        Toast.showShort("登录成功 ${result.data["username"]}");
+        Toast.showShort("用户${result.data["username"]}登录成功");
+        await SpStorage.save(Constant.KEY_IS_LOGIN, true);
+        UserDbProvider userDbProvider = new UserDbProvider();
+        await userDbProvider.insert(UserDbProvider.from(result.data));
         Navigator.pop(context, result.data["username"]);
       }
       Log.i(_TAG, result.toString());
@@ -118,10 +139,10 @@ class _LoginPageState extends State<LoginPage> {
       return "用户名不允许为空";
     }
 
-    final RegExp nameExp = RegExp(r'^[A-Za-z ]+@');
-    if (!nameExp.hasMatch(value)) {
-      return "请输入合法用户名";
-    }
+//    final RegExp nameExp = RegExp(r'^[A-Za-z ]+@');
+//    if (!nameExp.hasMatch(value)) {
+//      return "请输入合法用户名";
+//    }
     return null;
   }
 
@@ -154,62 +175,5 @@ class _LoginPageState extends State<LoginPage> {
               );
             }) ??
         false;
-  }
-}
-
-class PasswordField extends StatefulWidget {
-  PasswordField(
-      {this.key,
-      this.hintText,
-      this.labelText,
-      this.helperText,
-      this.decorationIcon,
-      this.onSaved,
-      this.validator,
-      this.onFieldSubmitted});
-
-  final Key key;
-  final String hintText;
-  final String labelText;
-  final String helperText;
-  final Icon decorationIcon;
-  final FormFieldSetter<String> onSaved;
-  final FormFieldValidator<String> validator;
-  final ValueChanged<String> onFieldSubmitted;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _PasswordFieldState();
-  }
-}
-
-class _PasswordFieldState extends State<PasswordField> {
-  bool _obscureText = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      key: widget.key,
-      obscureText: _obscureText,
-      onSaved: widget.onSaved,
-      validator: widget.validator,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(),
-        filled: true,
-        hintText: widget.hintText,
-        labelText: widget.labelText,
-        helperText: widget.hintText,
-        icon: widget.decorationIcon,
-        suffixIcon: GestureDetector(
-          child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
-          onTap: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-        ),
-      ),
-    );
   }
 }

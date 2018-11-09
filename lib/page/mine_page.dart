@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:simple_flutter/manager/constant.dart';
 import 'package:simple_flutter/manager/navigator_manager.dart';
 import 'package:simple_flutter/manager/store_manager.dart';
 import 'package:simple_flutter/manager/theme_data_manager.dart';
@@ -7,6 +8,7 @@ import 'package:simple_flutter/page/animation/home.dart';
 import 'package:simple_flutter/page/example/status_bar_example.dart';
 import 'package:simple_flutter/page/login_page.dart';
 import 'package:simple_flutter/redux/global_state.dart';
+import 'package:simple_flutter/storage/sp/sp_storage.dart';
 import 'package:simple_flutter/style/global_colors.dart';
 import 'package:simple_flutter/style/string/strings.dart';
 import 'package:simple_flutter/utils/log.dart';
@@ -63,21 +65,32 @@ class _MinePageState extends State<MinePage> {
                       child: Center(
                           child: FlatButton(
                         onPressed: () async {
-                          username = await NavigatorManager.goPage(
-                              context, LoginPage());
-                          setState(() {});
+                          bool isLogin =
+                              await SpStorage.get<bool>(Constant.KEY_IS_LOGIN);
+                          if (isLogin ?? false) {
+                            Toast.showShort("已经登录");
+                          } else {
+                            username = await NavigatorManager.goPage(
+                                context, LoginPage());
+                            Log.i(_TAG, "username: $username");
+                            setState(() {});
+                          }
                         },
-                        child: Column(
-                          children: <Widget>[
-                            UserIcon(width: 50.0, height: 50.0),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            DefaultTextStyle(
-                              style: DefaultTextStyle.of(context).style,
-                              child: Text("点我点我"),
-                            ),
-                          ],
+                        child: Center(
+                          child: Wrap(
+                            direction: Axis.vertical,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: <Widget>[
+                              UserIcon(width: 50.0, height: 50.0),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              DefaultTextStyle(
+                                style: DefaultTextStyle.of(context).style,
+                                child: Text(username ?? "点我点我"),
+                              ),
+                            ],
+                          ),
                         ),
                       )));
                 }
