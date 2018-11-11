@@ -99,4 +99,8 @@ A: ???????
 
 Q: Duplicate GlobalKey detected in widget tree.
 
-A: 例如Login页面和Register页面， 取消掉Login页面的passwordGlobalKey就不会奔溃了，但还是会报错,TextFormField导致的，暂时处理方式都去掉
+A: 例如Login页面和Register页面， 取消掉Login页面的passwordGlobalKey就不会奔溃了，但还是会报错,TextFormField导致的，暂时处理方式都去掉，使用TextEditingController进行操作
+
+Q: 使用pod install 出现bad interpreter: No such file or directory
+
+A: 更新了系统安全性导致   $ sudo gem update --system   $ sudo gem install cocoapods -n/usr/local/bin

@@ -54,7 +54,8 @@ dependencies:
   flutter_statusbar_manager: ^1.0.2
   # flutter_gallery_assets
   flutter_gallery_assets: 0.1.6
-
+  # Video
+  video_player: ^0.7.2
 
 
 

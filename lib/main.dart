@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       child: StoreBuilder<GlobalState>(
         builder: (context, store) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
