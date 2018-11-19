@@ -56,6 +56,8 @@ dependencies:
   flutter_gallery_assets: 0.1.6
   # Video
   video_player: ^0.7.2
+  # 统一的栈管理
+#  hybrid_stack_manager: ^0.0.7
 
 
 

@@ -104,3 +104,44 @@ A: 例如Login页面和Register页面， 取消掉Login页面的passwordGlobalKe
 Q: 使用pod install 出现bad interpreter: No such file or directory
 
 A: 更新了系统安全性导致   $ sudo gem update --system   $ sudo gem install cocoapods -n/usr/local/bin
+
+
+
+
+android 源码编译
+https://mp.weixin.qq.com/s/FFCeraDXcoCP8eJtxS3KWA
+https://github.com/anggrayudi/android-hidden-api
+https://www.jianshu.com/p/9bf96f648884
+https://www.jianshu.com/p/367f0886e62b
+
+https://blog.csdn.net/guolin_blog/article/details/9097463
+https://blog.csdn.net/guolin_blog/article/details/48719871
+https://blog.csdn.net/guolin_blog/article/details/12921889
+
+Flutter
+https://www.jianshu.com/p/8baa8ed2414d
+
+0.67
+0.75
+
+Binder机制
+https://blog.csdn.net/freekiteyu/article/details/70082302
+
+VIew
+https://www.jianshu.com/p/e9d8420b1b9c
+
+贝塞尔曲线
+https://www.jianshu.com/p/55c721887568
+
+carson_Ho
+https://www.jianshu.com/u/383970bef0a0
+
+面试
+https://mp.weixin.qq.com/s/ozurrujmIfEhHJuVGsNv9A
+
+understand
+https://www.cnblogs.com/zhangyang/p/7602485.html
+
+Q: Android license status unknown.
+
+A: flutter doctor --android-licenses

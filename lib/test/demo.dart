@@ -1,6 +1,6 @@
-import 'dart:_http';
 
 import 'package:flutter/material.dart';
+import 'package:simple_flutter/test/channel.dart';
 
 void main() => runApp(TestWidget());
 
@@ -10,7 +10,7 @@ class TestWidget extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: SliverWidget(),
+          child: MethodChannelWidget(),
         ),
       ),
     );
